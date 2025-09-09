@@ -1,5 +1,7 @@
 import warnings
 import os
+import textwrap
+import PIL.Image
 
 warnings.filterwarnings("ignore")
 
@@ -17,3 +19,31 @@ genai.configure(
         api_endpoint=os.getenv("GOOGLE_API_BASE"),
     )
 )
+
+
+from IPython.display import Markdown, Image
+
+
+# def to_markdown(text):
+#     text = text.replace("•", "  *")
+#     return Markdown(textwrap.indent(text, "> ", predicate=lambda _: True))
+
+
+def call_LMM(image_path: str, prompt: str) -> str:
+    img = PIL.Image.open(image_path)
+
+    model = genai.GenerativeModel("gemini-1.5-flash")
+    response = model.generate_content([prompt, img], stream=False)
+    response.resolve()
+    return response.text
+
+
+from pathlib import Path
+IMG = Path(__file__).resolve().parent / "invoice_sample.png"
+
+result=call_LMM(str(IMG),
+    """Identify items on the invoice, Make sure you output 
+    JSON with quantity, description, unit price and ammount.""")
+
+print(result)  # <-- this actually prints to the Run console
+

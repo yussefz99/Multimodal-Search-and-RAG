@@ -21,14 +21,6 @@ genai.configure(
 )
 
 
-from IPython.display import Markdown, Image
-
-
-# def to_markdown(text):
-#     text = text.replace("•", "  *")
-#     return Markdown(textwrap.indent(text, "> ", predicate=lambda _: True))
-
-
 def call_LMM(image_path: str, prompt: str) -> str:
     img = PIL.Image.open(image_path)
 
@@ -45,5 +37,8 @@ result=call_LMM(str(IMG),
     """Identify items on the invoice, Make sure you output 
     JSON with quantity, description, unit price and ammount.""")
 
-print(result)  # <-- this actually prints to the Run console
+print(result)  # <-- this actually prints to the Run consol
+
+
+
 
